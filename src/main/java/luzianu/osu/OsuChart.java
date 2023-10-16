@@ -114,12 +114,33 @@ public class OsuChart {
                     chart.getSource().getName(), hpString, odString, bgString));
 
             writer.write("[TimingPoints]\n");
+            int inheritedCount = 0;
             for (TimingPoint t : timingPoints) {
-                t.time -= musicOffset;
-                t.time = Math.max(0, t.time);
-                writer.write(t.toString());
+                if (!t.uninherited) {
+                    inheritedCount++;
+                }
+            }
+            for (int i = 0; i < timingPoints.size(); i++) {
+                timingPoints.get(i).time -= musicOffset;
+                timingPoints.get(i).time = Math.max(0, timingPoints.get(i).time);
+                if (i + 1 < timingPoints.size()) {
+                    TimingPoint next = timingPoints.get(i + 1);
+                    if (next.time <= musicOffset && next.uninherited) {
+                        continue;
+                    }
+                }
+                if (i == timingPoints.size() - 1 && !timingPoints.get(i).uninherited && inheritedCount <= 1) {
+                    continue;
+                }
+                writer.write(timingPoints.get(i).toString());
                 writer.write("\n");
             }
+            // for (TimingPoint t : timingPoints) {
+            // t.time -= musicOffset;
+            // t.time = Math.max(0, t.time);
+            // writer.write(t.toString());
+            // writer.write("\n");
+            // }
 
             writer.write("[HitObjects]\n");
             for (HitObject t : hitObjects) {
