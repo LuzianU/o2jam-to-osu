@@ -18,7 +18,7 @@ import luzianu.osu.TimingPoint;
 
 public class ChartConverter {
 
-    public static void toOsu(Chart chart, String outRoot, float od, String serverTag, boolean useSV)
+    public static void toOsu(Chart chart, String outRoot, float od, float hp, String serverTag, boolean useSV)
             throws IOException {
         System.out.println(
                 "sample count: " + chart.getSamples().size() + "\t" + chart.getSource() + " " + chart.getArtist()
@@ -159,7 +159,7 @@ public class ChartConverter {
 
         osuChart.export(Paths.get(outRoot, folder, name + ".osu").toAbsolutePath().toString(), chart,
                 audioFilename,
-                musicOffset, od, serverTag);
+                musicOffset, od, hp, serverTag);
     }
 
     private static List<HitObject> postProcessHitObject(List<HitObject> hitObjects) {

@@ -29,6 +29,7 @@ public class Main {
         String output_val = null;
         String serverTag_val = "";
         float od_val = Float.NaN;
+        float hp_val = 8.2f;
         boolean sv_val = false;
 
         for (int i = 0; i < args.length; i++) {
@@ -51,6 +52,19 @@ public class Main {
                         }
                     } else {
                         throw new RuntimeException("Error: Expected a value after --od");
+                    }
+                    break;
+
+                case "--hp":
+                    i++;
+                    if (i < args.length) {
+                        try {
+                            hp_val = Float.parseFloat(args[i]);
+                        } catch (NumberFormatException e) {
+                            throw new RuntimeException("Error: Invalid float value after --hp");
+                        }
+                    } else {
+                        throw new RuntimeException("Error: Expected a value after --hp");
                     }
                     break;
                 case "-i":
@@ -77,11 +91,12 @@ public class Main {
 
         if (input_val == null || output_val == null) {
             throw new RuntimeException(
-                    "Error: Please provide a input and output argument.\n\nRequired Arguments:\n-i <input_dir_or_ojn>\n-o <output_dir>\n\nOptional Arguments:\n--server <server_tag>\n--od <od_value>\n--sv");
+                    "Error: Please provide a input and output argument.\n\nRequired Arguments:\n-i <input_dir_or_ojn>\n-o <output_dir>\n\nOptional Arguments:\n--server <server_tag>\n--od <od_value>\n--hp <hp_value>\n--sv");
         }
 
         // java moment
         final float od = od_val;
+        final float hp = hp_val;
         final String serverTag = serverTag_val;
         final File input = new File(input_val);
         final File output = new File(output_val);
@@ -93,25 +108,26 @@ public class Main {
                 java.nio.file.Files.walkFileTree(startPath, new SimpleFileVisitor<Path>() {
                     @Override
                     public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-                        convert(path.toFile(), output, od, serverTag, sv);
+                        convert(path.toFile(), output, od, hp, serverTag, sv);
                         return FileVisitResult.CONTINUE;
                     }
                 });
             } else {
-                convert(input, output, od, serverTag, sv);
+                convert(input, output, od, hp, serverTag, sv);
             }
         } catch (Exception e) {
             System.err.println("could not read input");
         }
     }
 
-    private static void convert(final File input, final File output, final float od, final String serverTag,
+    private static void convert(final File input, final File output, final float od, final float hp,
+            final String serverTag,
             final boolean sv) {
         if (input.getName().endsWith(".ojn")) {
             try {
                 ChartList chartList = ChartParser.parseFile(input);
                 Chart chart = chartList.get(2);
-                ChartConverter.toOsu(chart, output.getAbsolutePath().toString(), od, serverTag, sv);
+                ChartConverter.toOsu(chart, output.getAbsolutePath().toString(), od, hp, serverTag, sv);
             } catch (Exception e) {
                 System.err.println("could not parse: " + input.getAbsolutePath().toString());
             }

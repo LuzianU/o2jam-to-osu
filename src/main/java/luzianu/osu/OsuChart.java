@@ -32,7 +32,7 @@ public class OsuChart {
         }
     }
 
-    public void export(String filePath, Chart chart, String audioFilename, float musicOffset, float od,
+    public void export(String filePath, Chart chart, String audioFilename, float musicOffset, float od, float hp,
             String serverTag) {
         String bgString = "";
         if (chart.hasCover()) {
@@ -45,6 +45,8 @@ public class OsuChart {
             }
             bgString = "0,0,\"bg.png\",0,0";
         }
+
+        String hpString = "" + hp;
 
         String odString = "7";
 
@@ -96,7 +98,7 @@ public class OsuChart {
                             "Tags:%s 5ynt3ck convert %s\n" +
                             "\n" +
                             "[Difficulty]\n" +
-                            "HPDrainRate:8.2\n" +
+                            "HPDrainRate:%s\n" +
                             "CircleSize:7\n" +
                             "OverallDifficulty:%s\n" +
                             "ApproachRate:0\n" +
@@ -109,7 +111,7 @@ public class OsuChart {
                     chart.getTitle(),
                     chart.getArtist(), chart.getArtist(), chart.getNoter(), levelString,
                     (serverTag.isEmpty() ? "O2Jam" : ("O2Jam " + serverTag)),
-                    chart.getSource().getName(), odString, bgString));
+                    chart.getSource().getName(), hpString, odString, bgString));
 
             writer.write("[TimingPoints]\n");
             for (TimingPoint t : timingPoints) {
