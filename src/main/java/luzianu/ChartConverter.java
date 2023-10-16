@@ -151,10 +151,16 @@ public class ChartConverter {
 
         String audioFilename = name + ".ogg";
 
-        Paths.get(outRoot, folder).toFile().mkdirs();
-
         AudioMixer audioMixer = new AudioMixer(chart.getSamples(),
                 chart.getSampleIndex(), folder, Paths.get(outRoot, folder, audioFilename).toAbsolutePath().toString());
+
+        if (!audioMixer.checkIfSamplesUsed(audioObjects)) {
+            System.err.println("no audio sample found/used.");
+            throw new RuntimeException("no audio sample found/used.");
+        }
+
+        Paths.get(outRoot, folder).toFile().mkdirs();
+
         float musicOffset = audioMixer.mix(audioObjects);
 
         osuChart.export(Paths.get(outRoot, folder, name + ".osu").toAbsolutePath().toString(), chart,

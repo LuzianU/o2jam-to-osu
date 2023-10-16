@@ -44,6 +44,22 @@ public class AudioMixer {
         return filename.replaceAll(extPattern, "");
     }
 
+    public boolean checkIfSamplesUsed(List<AudioObject> audioObjects) {
+        for (AudioObject audioObject : audioObjects) {
+            try {
+                SoundSample sample = audioObject.sample;
+
+                if (!sampleIndices.containsKey(sample.sample_id) || !samples.containsKey(sample.sample_id))
+                    continue;
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
     public float mix(List<AudioObject> audioObjects) throws IOException {
         String temp = System.getProperty("java.io.tmpdir");
         File folder = Paths.get(temp, "o2jam-to-osu", folderName).toFile();
@@ -88,6 +104,10 @@ public class AudioMixer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        if (lines.size() == 0) {
+            throw new RuntimeException("no audio sample found/used.");
         }
 
         if (lines.size() == 1) {
