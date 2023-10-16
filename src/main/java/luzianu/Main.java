@@ -19,9 +19,9 @@ public class Main {
         Locale.setDefault(Locale.US);
         Logger.global.setLevel(Level.OFF);
 
-        if (!new File("audio_sample_mixer.exe").exists()) {
+        if (!new File("audio-sample-mixer.exe").exists()) {
             System.err.println(
-                    "audio_sample_mixer.exe not found. Please download and put next to this .jar: https://github.com/LuzianU/audio-sample-mixer/releases/latest");
+                    "aaudio-sample-mixer.exe not found. Please download and put next to this .jar: https://github.com/LuzianU/audio-sample-mixer/releases/latest");
             System.exit(1);
         }
 

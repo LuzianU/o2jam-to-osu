@@ -133,7 +133,7 @@ public class AudioMixer {
     private void callMixer(Path csvPath, Path outputPath) {
         try {
             // Define the path to your .exe file
-            String exePath = "audio_sample_mixer.exe";
+            String exePath = "audio-sample-mixer.exe";
 
             // Define the arguments to pass to the executable
             String[] arguments = {
