@@ -12,6 +12,8 @@ Optional:
 
 ```--od <od_float_value>``` overwrite default OD values
 
+```--hp <hp_float_value>``` overwrite default HP value
+
 ```--server <server_name>``` will add this as the server tag of the converted difficulty names. Example: "O2Fantasia"<br>--> Difficulty name will be: [O2Jam] [O2Fantasia] [Level]
 
 ```--sv``` converted chart will have SV
